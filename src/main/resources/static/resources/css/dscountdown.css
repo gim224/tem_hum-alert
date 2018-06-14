@@ -69,7 +69,21 @@
 	margin: 8% 0px 0%;
 }
 
-.ds-black .ds-element {
+.ds-black > .ds-element.ds-element-days {
+	float: left;
+    text-align: center;
+    border-right: 1px solid #444;
+    padding-right: 10px;
+    width: 50%;
+}
+.ds-black> .ds-element.ds-element-minutes {
+	float: left;
+    text-align: center;
+    border-right: 1px solid #444;
+    padding-right: 10px;
+    width: 25%;
+}
+.ds-black> .ds-element.ds-element-seconds {
 	float: left;
     text-align: center;
     border-right: 1px solid #444;
@@ -197,7 +211,7 @@
 }
 @media (max-width: 1080px){
 	.ds-black .ds-element-value {
-		font-size: 0.9em;
+		font-size: 0.8em;
 	}
 }
 @media (max-width: 900px){

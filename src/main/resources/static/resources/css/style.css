@@ -197,6 +197,9 @@ color: #666 !important;
 .content3 ul li {
     display: inline-block;
 }
+
+
+
 .btn {
     background: #4CAF50;
     cursor: pointer;
@@ -290,6 +293,7 @@ input[type="email"],input[type="text"] {
 	-o-border-radius:0px;
 	font-family: 'Montserrat', sans-serif;
 }
+
 input[type="submit"] {
     border: none;
     color: #fff;
@@ -360,7 +364,7 @@ h3.sub-head-w3-agileits {
     text-align: center;
     font-size: 30px;
     color: #444;
-    margin-bottom: 1em;
+    margin-bottom: 0em;
 }
 p.popuptext {
     text-align: center;

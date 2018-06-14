@@ -24,7 +24,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <script type="application/x-javascript">
 	
 	
+	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
 
 
 </script>
@@ -69,24 +71,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 						<div class="demo2 dsCountDown ds-black">
 							<div class="ds-element ds-element-days">
-								<div class="ds-element-title">date</div>
-								<div class="ds-element-value ds-days" >${date}</div>
+								<div class="ds-element-title">시간</div>
+								<div class="ds-element-value ds-days">${date }</div>
 							</div>
-							<div class="ds-element ds-element-hours">
-								<div class="ds-element-title">
-									<c:out value="<temp>" escapeXml="true"></c:out>
-								</div>
-								<div class="ds-element-value ds-hours" >...</div>
-							</div>
+
 							<div class="ds-element ds-element-minutes">
-								<div class="ds-element-title">temperature</div>
-								<div class="ds-element-value ds-minutes"
-									>${temperature}℃</div>
+								<div class="ds-element-title">온도(℃)</div>
+								<div class="ds-element-value ds-minutes">${temperature} <%= request.getParameter("sensor.temperature")%></div>
 							</div>
 							<div class="ds-element ds-element-seconds">
-								<div class="ds-element-title">humidity</div>
-								<div class="ds-element-value ds-seconds"
-									>${humidity}%</div>
+								<div class="ds-element-title">습도(%)</div>
+								<div class="ds-element-value ds-seconds">${humidity}  <%= request.getParameter("humidity")%></div>
 							</div>
 						</div>
 
@@ -96,11 +91,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<li><p>
 									<a class="book popup-with-zoom-anim button-isi zoomIn animated"
 										data-wow-delay=".5s" href="#small-dialog"><span
-										class="fa fa-paper-plane-o"></span> Notify Me</a>
+										class="fa fa-paper-plane-o"></span> Setting</a>
 								</p></li>
 							<li><p>
-									<a class="read" href="#"><span class="fa fa-search"></span>
-										Learn More</a>
+									<a class="read" href="<c:url value="#"/>"><span
+										class="fa fa-search"></span> Logout</a>
 								</p></li>
 						</ul>
 					</div>
@@ -119,7 +114,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		media='all' />
 	<script type="text/javascript"
 		src="<c:url value="/resources/js/dscountdown.min.js"/>"></script>
-	<script src="<c:url value="js/demo-1.js"/>"></script>
+	<script src="<c:url value="/resources/js/demo-1.js"/>"></script>
 	<!-- 	<!-- 		<script> -->
 	-->
 	<!-- 	// jQuery(document).ready(function($){ // $('.demo2').dsCountDown({ // -->
@@ -144,11 +139,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 	<div class="pop-up">
 		<div id="small-dialog" class="mfp-hide book-form">
-			<h3 class="sub-head-w3-agileits">Subscribe Us</h3>
-			<p class="popuptext">Be the first to know when our site is ready</p>
+			<h3 class="sub-head-w3-agileits">Setting</h3>
+			<hr />
+			<br />
 			<form action="#" method="post">
-				<input type="email" placeholder="Enter Your Email" required="">
-				<input type="Submit">
+				<p class="popuptext">
+					E-mail : <input type="radio" name="email" value="ON"> ON <input
+						type="radio" name="email" value="OFF" checked="checked">
+					OFF
+				</p>
+				<blockquote>24시간마다 E-mail이 전송됩니다.</blockquote>
+				<br />
+				<p class="popuptext">
+					Android Notification : <input type="radio" name="android"
+						value="ON"> ON <input type="radio" name="android"
+						value="OFF" checked="checked">OFF
+				</p>
+				<blockquote>1시간마다 notification이 전송됩니다.</blockquote>
+				<br />
+				<div class="cen">
+					<input type="submit" value="OK">
+				</div>
 				<div class="clear"></div>
 			</form>
 		</div>
@@ -200,6 +211,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</script>
 	<!--//popup-js-->
 
+
+	<script>
+		$(document).ready(function(){
+			updateData();
+		});
+		
+		function updateData(){
+			$.ajax({
+				url : "/api/raspberry/sensor",
+				type : "GET",
+				success: function(data){
+					
+				}
+			
+			});
+			
+			setTimeout("updateData()",1000); //1 sec
+			
+		}
+	
+	</script>
 </body>
 <!-- //Body -->
 
