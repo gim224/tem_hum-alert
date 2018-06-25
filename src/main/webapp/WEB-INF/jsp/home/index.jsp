@@ -8,6 +8,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <!-- Html -->
@@ -25,7 +28,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
+
+
+
+
+
+
 
 
 
@@ -35,9 +52,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 <link href="<c:url value="/resources/css/popup-box.css"/>"
 	rel="stylesheet" type="text/css" media="all" />
-<link href="<c:url value="/resources//css/font-awesome.css"/>"
+<link href="<c:url value="/resources/css/font-awesome.css"/>"
 	rel="stylesheet" type="text/css" media="all" />
-<link href="<c:url value="/resources//css/style.css"/>" rel="stylesheet"
+<link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet"
 	type="text/css" media="all" />
 <!-- stylesheet -->
 <script type="text/javascript"
@@ -52,6 +69,52 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	href="//fonts.googleapis.com/css?family=Quattrocento+Sans:400,400i,700,700i&amp;subset=latin-ext"
 	rel="stylesheet">
 <!--/fonts-->
+
+<script>
+	$(document).ready(function() {
+		updateData();
+	});
+
+	function updateData() {
+		$.ajax({
+			url : "/api/raspberry/sensor",
+			dataType : "json",
+			type : "GET",
+			success : function(data) {
+				$('#tem').html(data.temperature);
+				$('#hum').html(data.humidity);
+				$('#day').html(getTimeStamp());
+
+			}
+
+		});
+
+		setTimeout("updateData()", 1000); //1 sec
+
+	}
+
+	function getTimeStamp() { // 24시간제
+		var d = new Date();
+
+		var s =
+
+		leadingZeros(d.getHours(), 2) + ':' + leadingZeros(d.getMinutes(), 2)
+				+ ':' + leadingZeros(d.getSeconds(), 2);
+
+		return s;
+	}
+
+	function leadingZeros(n, digits) {
+		var zero = '';
+		n = n.toString();
+
+		if (n.length < digits) {
+			for (i = 0; i < digits - n.length; i++)
+				zero += '0';
+		}
+		return zero + n;
+	}
+</script>
 </head>
 <!-- //Head -->
 
@@ -72,16 +135,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<div class="demo2 dsCountDown ds-black">
 							<div class="ds-element ds-element-days">
 								<div class="ds-element-title">시간</div>
-								<div class="ds-element-value ds-days">${date }</div>
+								<div class="ds-element-value ds-days" id="day">${date }</div>
 							</div>
 
 							<div class="ds-element ds-element-minutes">
 								<div class="ds-element-title">온도(℃)</div>
-								<div class="ds-element-value ds-minutes">${temperature} <%= request.getParameter("sensor.temperature")%></div>
+								<div class="ds-element-value ds-minutes" id="tem">${temperature}
+								</div>
 							</div>
 							<div class="ds-element ds-element-seconds">
 								<div class="ds-element-title">습도(%)</div>
-								<div class="ds-element-value ds-seconds">${humidity}  <%= request.getParameter("humidity")%></div>
+								<div class="ds-element-value ds-seconds" id="hum">${humidity}</div>
 							</div>
 						</div>
 
@@ -94,11 +158,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 										class="fa fa-paper-plane-o"></span> Setting</a>
 								</p></li>
 							<li><p>
-									<a class="read" href="<c:url value="#"/>"><span
+									<a class="read" href="<c:url value="/logout"/>"><span
 										class="fa fa-search"></span> Logout</a>
 								</p></li>
 						</ul>
 					</div>
+
+
+
+
+					<div class="demo3" style="margin-top: 20px">
+
+						<ol>
+							<li style="font-size: 8px">최적 : 21~24 / 45~55</li>
+							<li style="font-size: 8px">정상 : 16~28 / 40~70</li>
+							<li style="font-size: 8px">위험 : 그 외</li>
+						</ol>
+
+
+					</div>
+
+
 					<p class="agileinfo txt-center">&copy; 2018 Site Coming Soon...
 						Be developed by GT.kim, kr-cse</p>
 					<!-- <p class="agileinfo txt-center"> &copy; 2018 Site Coming Soon. All Rights Reserved | Design by  <a href="http://w3layouts.com/"> W3layouts</a></p> -->
@@ -142,53 +222,70 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<h3 class="sub-head-w3-agileits">Setting</h3>
 			<hr />
 			<br />
-			<form action="#" method="post">
+			<%-- 			<form:form action="/alertChanged" method="post" modelAttribute="user"> --%>
+			<!-- 				<p class="popuptext"> -->
+			<%-- 					E-mail : <form:radiobutton path="emailAlert" value="1" label="ON"/>   --%>
+			<%-- 					<form:radiobutton path="emailAlert" value="0" label="OFF"/> --%>
+			<!-- 				</p> -->
+			<!-- 				<blockquote>24시간마다 E-mail이 전송됩니다.</blockquote> -->
+			<!-- 				<br /> -->
+			<!-- <!-- 				<p class="popuptext"> -->
+
+			<!-- <!-- 					Android Notification : <input type="radio" name="android" -->
+
+			<!-- <!-- 						value="ON"> ON <input type="radio" name="android" -->
+
+			<!-- <!-- 						value="OFF" checked="checked">OFF -->
+
+			<!-- <!-- 				</p> -->
+
+			<!-- <!-- 				<blockquote>1시간마다 notification이 전송됩니다.</blockquote> -->
+
+			<!-- <!-- 				<br /> -->
+
+			<!-- 				<div class="cen"> -->
+			<!-- 					<input type="submit" value="OK"> -->
+			<!-- 				</div> -->
+			<!-- 				<div class="clear"></div> -->
+			<%-- 			</form:form> --%>
+
+			<form action="/alertChanged" method="post" modelAttribute="user">
 				<p class="popuptext">
-					E-mail : <input type="radio" name="email" value="ON"> ON <input
-						type="radio" name="email" value="OFF" checked="checked">
-					OFF
+					E-mail : <input type="radio" name="emailAlert" value="1"
+						checked="checked" /> ON <input type="radio" name="emailAlert"
+						value="0" /> OFF
 				</p>
-				<blockquote>24시간마다 E-mail이 전송됩니다.</blockquote>
+				<blockquote>※ e-mail에 on을 check하면, 1시간마다 E-mail이 전송됩니다.</blockquote>
+				
 				<br />
-				<p class="popuptext">
-					Android Notification : <input type="radio" name="android"
-						value="ON"> ON <input type="radio" name="android"
-						value="OFF" checked="checked">OFF
-				</p>
-				<blockquote>1시간마다 notification이 전송됩니다.</blockquote>
+<%-- 				<p class="popuptext"><a href="<c:url value="/files/app-debug.zip"/>">download app</a></p> --%>
+				<blockquote>※ 앱을 다운로드 시, 1시간마다 notification이 전송됩니다.</blockquote>
+
+
 				<br />
+				
+				
 				<div class="cen">
-					<input type="submit" value="OK">
+					<span><input type="submit" value="OK"></span>
 				</div>
+
+
+
 				<div class="clear"></div>
 			</form>
-		</div>
-	</div>
-	<div class="pop-up">
-		<div id="small-dialog2" class="mfp-hide book-form">
-			<h3 class="sub-head-w3-agileits">Launching Soon</h3>
-			<span class="fa fa-paper-plane-o"></span>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Curabitur varius metus et consequat maximus lorem. Pellentesque a
-				est sagittis urabitur.</p>
-			<div class="address">
-				<p>
-					<span class="bold">Address</span> : <span class="fa fa-map-marker"></span>
-					USA Parkway, Silver Springs, NV, USA
-				</p>
-				<p>
-					<span class="bold">Contact</span> : <span class="fa fa-phone"></span>
-					+0 123 446 987
-				</p>
-				<p>
-					<span class="bold">Mail </span> :<span class="fa fa-envelope"></span>
-					<a href="mailto:info@example.com">info@example.com</a>
-				</p>
+
+			<div class="">
+				<sec:authentication var="principal" property="principal" />
+				<c:if test="${principal.username == 'gim224'}">
+					<form action="/manager" method="post">
+						<input type="submit" value="manager_page" />
+					</form>
+				</c:if>
 			</div>
-			<iframe
-				src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19454557.19634976!2d-132.64465989095385!3d53.47160766892698!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5309b282a82419b5%3A0xb0a9479a409b8e9e!2sAlberta%2C+Canada!5e0!3m2!1sen!2sin!4v1510641039780"></iframe>
+
 		</div>
 	</div>
+
 
 	<!--popup-js-->
 	<script src="<c:url value="/resources/js/jquery.magnific-popup.js"/>"
@@ -212,26 +309,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<!--//popup-js-->
 
 
-	<script>
-		$(document).ready(function(){
-			updateData();
-		});
-		
-		function updateData(){
-			$.ajax({
-				url : "/api/raspberry/sensor",
-				type : "GET",
-				success: function(data){
-					
-				}
-			
-			});
-			
-			setTimeout("updateData()",1000); //1 sec
-			
-		}
-	
-	</script>
+
 </body>
 <!-- //Body -->
 

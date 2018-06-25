@@ -7,7 +7,7 @@
 	<groupId>kr.cse.gt</groupId>
 	<artifactId>temperature-humidity-alert-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>temperature-humidity-alert-server</name>
 	<description>temperature-humidity-alert-server for computer room, Kimpo IT</description>
@@ -34,10 +34,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.springframework.boot</groupId> -->
-		<!-- <artifactId>spring-boot-starter-security</artifactId> -->
-		<!-- </dependency> -->
+		<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -58,11 +58,11 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.h2database</groupId> -->
+<!-- 			<artifactId>h2</artifactId> -->
+<!-- 			<scope>runtime</scope> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -85,6 +85,10 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

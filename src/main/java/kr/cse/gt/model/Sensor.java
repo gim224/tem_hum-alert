@@ -2,15 +2,14 @@ package kr.cse.gt.model;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 public class Sensor {
@@ -21,6 +20,7 @@ public class Sensor {
 	private Integer id;
 
 	// 현재시간
+	@UpdateTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateTime;
 
@@ -30,7 +30,7 @@ public class Sensor {
 
 	// 습도
 	@NotNull
-	private Float humidity;
+	private Integer humidity;
 	
 //	@ManyToOne(cascade=CascadeType.ALL)
 //	@JoinColumn(name="tem_id")
@@ -57,11 +57,11 @@ public class Sensor {
 		this.temperature = temperature;
 	}
 
-	public Float getHumidity() {
+	public Integer getHumidity() {
 		return humidity;
 	}
 
-	public void setHumidity(Float humidity) {
+	public void setHumidity(Integer humidity) {
 		this.humidity = humidity;
 	}
 	

@@ -6,4 +6,7 @@ import kr.cse.gt.model.User;
 
 public interface UserDao extends JpaRepository<User, Integer> {
 
+	public User findByUsername(String username);
+	public User findByEmail(String email);
+	
 }
